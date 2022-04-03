@@ -1,0 +1,49 @@
+.name {
+  font-size: 20px;
+  color: rgb(140, 41, 41);
+}
+
+.info {
+  display: flex;
+  justify-content: space-around;
+}
+
+.reviewInput {
+  margin: 16px 0;
+}
+
+.reviews {
+  list-style: none;
+  padding: 0;
+  margin-top: 20px;
+}
+
+.checked {
+  color: orange;
+}
+
+.submitButton {
+  background-color: #5bc0de;
+  font-size: 18px;
+  color: white;
+  border-radius: 6px;
+  padding: 5px 10px;
+  border-color: #5bc0de;
+  cursor: pointer;
+}
+
+.review {
+  background-color: white;
+  border: 1px solid darkgray;
+  border-radius: 6px;
+  margin: 10px 0;
+  padding-left: 10px;
+}
+
+.review p {
+  font-size: 14px;
+}
+
+.username {
+  font-style: italic;
+}

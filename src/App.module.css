@@ -1,0 +1,15 @@
+body {
+    font-family: Verdana, Geneva, sans-serif
+}
+
+.content {
+    display: block;
+    margin: 0 auto;
+    max-width: 1000px;
+    min-height: 100vh;
+    background-color:floralwhite;
+}
+
+* {
+    box-sizing: border-box;
+}

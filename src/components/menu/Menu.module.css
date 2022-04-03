@@ -1,0 +1,59 @@
+.header {
+  background-color: coral;
+  font-size: 20px;
+  display: flex;
+}
+
+.products {
+  list-style: none;
+  display: flex;
+}
+
+.NavLink {
+  text-decoration: none;
+  color: inherit;
+  border: 1px solid black;
+  padding: 10px;
+  margin-right: 10px;
+}
+
+.product {
+  /* border: 1px solid black; */
+  flex-direction: row;
+  /* padding: 10px;
+  margin-right: 10px;
+  background-color: darksalmon;
+  cursor: pointer; */
+}
+
+.NavLinkLoginButton {
+  padding: 10px;
+  margin-left: auto;
+}
+
+.login {
+  background-color: transparent;
+  border: 1px solid black;
+  border-radius: 0px;
+  font-size: inherit;
+  cursor: pointer;
+  align-items: center;
+  padding: 10px;
+  color:darkblue;
+  margin-right: 30px ;
+}
+
+.NavLink:hover,
+.login:hover {
+  color: white;
+  background-color: brown;
+}
+
+.loginOk {
+  background-color: transparent;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  color:darkblue;
+  margin-left: auto;
+}
