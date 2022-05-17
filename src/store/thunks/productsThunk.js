@@ -1,8 +1,6 @@
-import axios from 'axios';
-import { addNews } from '../state/news/actions';
+import { productsAPI } from 'api/products';
+import { getProducts } from 'store/state/products/actions';
 
-export const addNewsAction = () => dispatch => {
-  axios
-    .get('https://newsapi.org/v2/top-headlines?country=ua&apiKey=9e57f68aa46441be9f2cd43e8e6a4fdb')
-    .then(response => dispatch(addNews(response.data.articles)));
+export const getProductsThunk = () => dispatch => {
+  productsAPI.get().then(products => dispatch(getProducts(products)));
 };

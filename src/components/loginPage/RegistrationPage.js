@@ -1,17 +1,18 @@
 import styles from './RegistrationPage.module.css';
-import axios from 'axios';
 import { useState } from 'react';
-import { auth } from 'utils/auth';
+import { loginURL, registerURL } from 'utils/constants';
+import { connect } from 'react-redux';
+import { authThunk } from 'store/thunks/authThunk';
+import { authSelector, errorSelector } from 'store/state/auth/selectors';
 
-export const RegistrationPage = ({ authUser, setAuthUser }) => {
+const RegistrationPage = ({ authUser, authenticate, error }) => {
   const [login, setLogin] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState(false);
   const [clientError, setClientError] = useState('');
 
-  const URL = error ? 'https://smktesting.herokuapp.com/api/login/' : 'https://smktesting.herokuapp.com/api/register/';
+  const URL = error ? loginURL : registerURL;
 
-  const authenticate = e => {
+  const submitAuth = e => {
     e.preventDefault();
 
     if (login === '') {
@@ -22,24 +23,11 @@ export const RegistrationPage = ({ authUser, setAuthUser }) => {
       return;
     }
 
-    axios
-      .post(URL, {
-        username: login,
-        password,
-      })
-      .then(response => {
-        if (response.data.success) {
-          setAuthUser({ login, token: response.data.token });
-          auth.set({ token: response.data.token, login });
-        } else {
-          auth.delete();
-          setError(response.data.message);
-        }
-      });
+    authenticate({ URL, login, password });
   };
 
   return !authUser.login ? (
-    <form onSubmit={authenticate}>
+    <form onSubmit={submitAuth}>
       <div className={styles.loginPage}>
         <p className={styles.registration}>Registration</p>
         <div className={styles.auth}>
@@ -75,3 +63,12 @@ export const RegistrationPage = ({ authUser, setAuthUser }) => {
     <p className={styles.successMessage}>User successfully registered, token is {authUser.token}</p>
   );
 };
+
+const mapStateToProps = state => ({
+  authUser: authSelector(state),
+  error: errorSelector(state)
+});
+
+const mapDispatchToProps = { authenticate: authThunk };
+
+export default connect(mapStateToProps, mapDispatchToProps)(RegistrationPage);

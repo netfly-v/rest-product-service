@@ -1,3 +1,3 @@
-import { ADD_NEWS } from "./types";
+import { GET_PRODUCTS } from "./types";
 
-export const addNews = news => ({ type: ADD_NEWS, news });
+export const getProducts = products => ({ type: GET_PRODUCTS, products });

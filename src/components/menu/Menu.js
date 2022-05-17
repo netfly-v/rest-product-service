@@ -1,8 +1,11 @@
+import { connect } from 'react-redux';
 import { NavLink } from 'react-router-dom';
-import { storage } from 'utils/localStorage';
+import { authSelector } from 'store/state/auth/selectors';
+import { productsSelector } from 'store/state/products/selectors';
+import { logoutThunk } from 'store/thunks/authThunk';
 import styles from './Menu.module.css';
 
-export const Menu = ({ products, authUser, setAuthUser }) => {
+const Menu = ({ products, authUser, logout }) => {
   return (
     <div className={styles.header}>
       <ul className={styles.products}>
@@ -24,12 +27,7 @@ export const Menu = ({ products, authUser, setAuthUser }) => {
       {authUser.login ? (
         <>
           <span className={styles.loginOk}>Hello, {authUser.login}</span>
-          <button className={styles.login}
-            onClick={() => {
-              storage.set('auth', '');
-              setAuthUser({});
-            }}
-          >
+          <button className={styles.login} onClick={logout}>
             Exit
           </button>
         </>
@@ -41,3 +39,12 @@ export const Menu = ({ products, authUser, setAuthUser }) => {
     </div>
   );
 };
+
+const mapStateToProps = state => ({
+  authUser: authSelector(state),
+  products: productsSelector(state)
+});
+
+const mapDispatchToProps = { logout: logoutThunk };
+
+export default connect(mapStateToProps, mapDispatchToProps)(Menu);

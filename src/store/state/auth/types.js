@@ -1,1 +1,3 @@
-export const ADD_NEWS = 'ADD_NEWS'
+export const AUTH = 'AUTH'
+export const LOGOUT = 'LOGOUT'
+export const SET_ERROR = 'SET_ERROR'

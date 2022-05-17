@@ -1,1 +1,1 @@
-export const ADD_NEWS = 'ADD_NEWS'
+export const GET_PRODUCTS = 'GET_PRODUCTS'

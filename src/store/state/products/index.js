@@ -1,14 +1,13 @@
-import { ADD_NEWS } from './types';
+import { GET_PRODUCTS } from './types';
 
 const initialState = {
-  news: [],
+  products: [],
 };
 
-export const newsReducer = (state = initialState, action) => {
+export const productsReducer = (state = initialState, action) => {
   switch (action.type) {
-    case ADD_NEWS:
-      return { ...state, news: action.news };
-
+    case GET_PRODUCTS:
+      return { ...state, products: action.products };
     default:
       return state;
   }

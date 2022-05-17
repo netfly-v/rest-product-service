@@ -1,50 +1,63 @@
-import axios from 'axios';
+import { reviewsAPI } from 'api/reviews';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { useNavigate, useParams } from 'react-router-dom';
+import { productsSelector } from 'store/state/products/selectors';
 import { auth } from 'utils/auth';
+import { ROUTES } from 'utils/routes';
 import styles from './MainPage.module.css';
 import { Rate } from './Rate';
 
-export const MainPage = ({ products }) => {
+const MainPage = ({ products }) => {
   const { productId } = useParams();
-  const product = products ? products.find(prod => prod.id === parseInt(productId)) : null;
+  const product = products.length ? products.find(prod => prod.id === parseInt(productId)) : null;
 
   const [reviews, setReviews] = useState();
   const [rate, setRate] = useState(0);
   const [reviewText, setReviewText] = useState('');
 
   useEffect(() => {
-    axios.get(`https://smktesting.herokuapp.com/api/reviews/${productId}`).then(response => setReviews(response.data));
+    reviewsAPI.getReviews(productId).then(data => setReviews(data));
   }, [productId]);
 
+  const navigate = useNavigate();
+
   const postReview = () => {
-    const token = auth.get().token;
-    axios
-      .post(
-        `https://smktesting.herokuapp.com/api/reviews/${productId}`,
-        {
-          rate,
-          text: reviewText,
-        },
-        {
-          headers: {
-            Authorization: `Token ${token}`,
+    if (auth.get() && auth.get().token) {
+      reviewsAPI
+        .postReview(
+          productId,
+          {
+            rate,
+            text: reviewText,
           },
-        }
-      )
-      .then(() => {
-        axios.get(`https://smktesting.herokuapp.com/api/reviews/${productId}`).then(response => {
-          setReviews(response.data);
-          setRate(0);
-          setReviewText('')
+          {
+            headers: {
+              Authorization: `Token ${auth.get().token}`,
+            },
+          }
+        )
+        .then(() => {
+          reviewsAPI.getReviews(productId).then(data => {
+            setReviews(data);
+            setRate(0);
+            setReviewText('');
+          });
         });
-      });
+    } else {
+      navigate(ROUTES.REGISTRATION_PAGE);
+    }
+  };
+
+  const getParsedDate = date => {
+    const parsedDate = new Date(date);
+    return parsedDate.toUTCString();
   };
 
   return (
     <div>
       <div className={styles.info}>
-        {products ? (
+        {products.length ? (
           <div className={styles.mainInfo}>
             <p className={styles.name}>{product.title}</p>
             <hr />
@@ -78,7 +91,7 @@ export const MainPage = ({ products }) => {
               ? reviews.map(review => (
                   <li className={styles.review} key={review.id}>
                     <p className={styles.username}>
-                      {review.created_by.username} at {review.created_at}
+                      {review.created_by.username} at {getParsedDate(review.created_at)}
                     </p>
                     <p className={styles.rate}>Rate: {review.rate}</p>
                     <p className={styles.comment}>Comment: {review.text}</p>
@@ -91,3 +104,9 @@ export const MainPage = ({ products }) => {
     </div>
   );
 };
+
+const mapStateToProps = state => ({
+  products: productsSelector(state),
+});
+
+export default connect(mapStateToProps)(MainPage);

@@ -1,10 +1,14 @@
 import { applyMiddleware, combineReducers, createStore } from 'redux';
 import thunkMiddleware from 'redux-thunk';
 import logger from 'redux-logger';
-import { newsReducer } from './state/auth';
+import { authReducer} from './state/auth';
+import { productsReducer } from './state/products';
 
+
+//domain не добавляется это сделано для удобства здесь
 const reducers = combineReducers({
-  auth: authReducer,
+  authDomain: authReducer,
+  productsDomain: productsReducer,
 });
 
-export const store = createStore(reducers, applyMiddleware(logger, thunkMiddleware));
+export const store = createStore(reducers, applyMiddleware(thunkMiddleware, logger));

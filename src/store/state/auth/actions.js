@@ -1,3 +1,5 @@
-import { ADD_NEWS } from "./types";
+import { AUTH, LOGOUT, SET_ERROR } from './types';
 
-export const addNews = news => ({ type: ADD_NEWS, news });
+export const authAction = auth => ({ type: AUTH, auth });
+export const logoutAction = auth => ({ type: LOGOUT, auth });
+export const setErrorAction = error => ({ type: SET_ERROR, error });
